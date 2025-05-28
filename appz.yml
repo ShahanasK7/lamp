@@ -1,0 +1,32 @@
+app:
+  name: tiq_marketexplorer
+  code: tiq_marketexplorer
+  notify: appzdev@cloudbourne.co
+
+build:
+  version: 1.0
+  env: DEV
+  repo: https://github.com/TI-Pro/TIWebsite
+  args:
+    WORK_DIR: "/appz/server/source/apache"
+  build_file: none
+  output_files: output/*.zip
+  image_template: apache-2.4
+
+deploy:
+  context: tradeideas/DEV
+  #ingress: none
+  replicas: 1
+  resources: x-large
+  port:
+  - 9369
+
+properties:
+  MYSQL_HOST : "mysql-5-7:3306"
+  MYSQL_DATABASE : ""
+  MYSQL_USER : ""
+  ENABLE_HA : "no"
+  DB_PASSWORD:
+     vault: DB_PASSWORD
+
+  revision : 5
