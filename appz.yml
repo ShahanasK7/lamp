@@ -18,6 +18,10 @@ deploy:
   replicas: 1
   port:
     - 9369
+    - 80
+    - 8080
+    - 8081
+    - 8082
   # nodeSelector:
   #   nodepool: apache
   # tolerations:
