@@ -1,32 +1,58 @@
 app:
-  name: tiq_marketexplorer
-  code: tiq_marketexplorer
+  name: apache
+  code: apache
   notify: appzdev@cloudbourne.co
 
 build:
   version: 1.0
-  env: DEV
+  env: PROD
   repo: https://github.com/TI-Pro/TIWebsite
   args:
     WORK_DIR: "/appz/server/source/apache"
   build_file: none
   output_files: output/*.zip
-  image_template: apache-2.4
+  image_template: phphttpd-2.4
 
 deploy:
-  context: tradeideas/DEV
-  #ingress: none
+  context: tipreprod/PROD
   replicas: 1
-  resources: x-large
   port:
-  - 9369
+    - 9369
+  # nodeSelector:
+  #   nodepool: apache
+  # tolerations:
+  #   - key: nodepool
+  #     operator: Equal
+  #     value: apache
+  #     effect: NoSchedule
+
+# # Uncomment if/when you need a PVC
+# volumes:
+#   - claim: lamp-pvc
+#     mount: /var/www/
+#     name: lamp-pvc
+#     size: 64Gi
+#     matchLabels: false
 
 properties:
-  MYSQL_HOST : "mysql-5-7:3306"
-  MYSQL_DATABASE : ""
-  MYSQL_USER : ""
-  ENABLE_HA : "no"
+  MYSQL_HOST: "mysql-slave-8-1:3306"
+  MYSQL_DATABASE: ""
+  MYSQL_USER: "web_client"
+  ENABLE_HA: "no"
+  ROLE: "productweb"
+  ENVIRONMENT: "test"
+  TOKEN:
+    vault: TOKEN
+  GITHUB_USER:
+    vault: GITHUB_USER
+  GITHUB_URL: "https://$GITHUB_USER:$TOKEN@github.com/TI-Pro"
+  GIT_BRANCH: "8833-preprod"
   DB_PASSWORD:
-     vault: DB_PASSWORD
-
-  revision : 5
+    vault: DB_PASSWORD
+  ACTIVECAMPAIGN:
+    vault: ACTIVECAMPAIGN
+  ACTIVECAMPAIGN_URL:
+    vault: ACTIVECAMPAIGN_URL
+  ACTIVECAMPAIGN_API_KEY:
+    vault: ACTIVECAMPAIGN_API_KEY
+  revision: 06
