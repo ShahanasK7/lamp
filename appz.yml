@@ -11,7 +11,7 @@ build:
     WORK_DIR: "/appz/server/source/apache"
   build_file: none
   output_files: output/*.zip
-  image_template: phphttpd-2.4
+  image_template: phphttpd-2.4-lamp-test
 
 deploy:
   context: tipreprod/PROD
